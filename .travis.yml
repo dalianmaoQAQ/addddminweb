@@ -1,23 +1,23 @@
-languge: node.js
-node.js: 
-  - 10.16.3
-cache: 
-  directories:
-  - node_modules
+language: node_js
+node_js:
+  - "8"
+
 install:
   - npm install
-before_script:
-  script:
+
+script:
   - npm run build
-  after_script: 
+
+after_success:
   - cd ./dist
   - git init
-  - git config user.name "${U_NAME}"
-  - git config user.email "${U_EMAIL}"
+  - git config --global user.name "${U_NAME}"
+  - git config --global user.email "${U_EMAIL}"
   - git add .
-  - git commit -m "Travis CI builder"
-  - git push --force --quiet "https://${GH_TOKEN}@${GH_REF}" master:master
-  # - ssh root@121.4.26.210 'cd /data/www && git fetch --all && git reset --hard origin/master && git pull'
+  - git commit -m "Automatically update from travis-ci"
+  - git push --quiet --force  "https://${GH_TOKEN}@${GH_REF}" master:master
+  - ssh root@121.4.26.210 'cd /data/www && git fetch --all && git reset --hard origin/master && git pull'
+
 branches:
   only:
-  - master
+    - master
